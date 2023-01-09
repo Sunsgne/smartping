@@ -4,14 +4,15 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/cihub/seelog"
-	_ "github.com/mattn/go-sqlite3"
-	"github.com/smartping/smartping/src/g"
-	"github.com/smartping/smartping/src/nettools"
 	"net/smtp"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/cihub/seelog"
+	_ "github.com/mattn/go-sqlite3"
+	"github.com/smartping/smartping/src/g"
+	"github.com/smartping/smartping/src/nettools"
 )
 
 func StartAlert() {
@@ -115,8 +116,8 @@ func AlertSendMail(t g.AlertLog) {
 		fmt.Fprintf(mtrstr, "<tr><td>%d %s</td><td>%.2f</td><td>%d</td><td>%v</td><td>%v</td><td>%v</td><td>%v</td><td>%.2f</td></tr>", i+1, hop.Host, ((float64(hop.Loss) / float64(hop.Send)) * 100), hop.Send, hop.Last, hop.Avg, hop.Best, hop.Wrst, hop.StDev)
 	}
 	fmt.Fprintf(mtrstr, "</table>")
-	title := "【" + t.Fromname + "->" + t.Targetname + "】网络异常报警（" + t.Logtime + "）- SmartPing"
-	content := "报警时间：" + t.Logtime + " <br> 来路：" + t.Fromname + "(" + t.Fromip + ") <br>  目的：" + t.Targetname + "(" + t.Targetip + ") <br> "
+	title := "【" + t.Fromname + "->" + t.Targetname + "】抖动大于200ms且丢包率大于30%（" + t.Logtime + "）- PingMesh"
+	content := "报警时间：" + t.Logtime + " <br> 来路：" + t.Fromname + "(" + t.Fromip + ") <br>  目的：" + t.Targetname + "(" + t.Targetip + ") <br> <br> <br>"
 	SendEmailAccount := g.Cfg.Alert["SendEmailAccount"]
 	SendEmailPassword := g.Cfg.Alert["SendEmailPassword"]
 	EmailHost := g.Cfg.Alert["EmailHost"]
