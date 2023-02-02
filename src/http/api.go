@@ -8,7 +8,6 @@ import (
 	"github.com/smartping/smartping/src/funcs"
 	"github.com/smartping/smartping/src/g"
 	"github.com/smartping/smartping/src/nettools"
-	"github.com/wcharczuk/go-chart"
 	"github.com/wcharczuk/go-chart/drawing"
 	"io/ioutil"
 	"net"
@@ -307,7 +306,7 @@ func configApiRoutes() {
 		for i := 0; i < 5; i++ {
 			wg.Add(1)
 			go func() {
-				delay, err := nettools.RunPing(ipaddr, 3*time.Second, 64, i)
+				delay, err := nettools.RunPing(ipaddr, 5*time.Second, 64, i)
 				if err != nil {
 					channel <- -1.00
 				} else {
@@ -567,7 +566,7 @@ func configApiRoutes() {
 		}
 		url := r.Form["g"][0]
 		config := g.PingStMini{}
-		timeout := time.Duration(time.Duration(g.Cfg.Base["Timeout"]) * time.Second)
+		timeout := time.Duration(time.Duration(g.Cfg.Base["Timeout"]) * 10 * time.Second)
 		client := http.Client{
 			Timeout: timeout,
 		}
@@ -716,7 +715,7 @@ func configApiRoutes() {
 			http.Error(w, o, 406)
 			return
 		}
-		timeout := time.Duration(time.Duration(defaultto) * time.Second)
+		timeout := time.Duration(time.Duration(defaultto) * 10 * time.Second)
 		client := http.Client{
 			Timeout: timeout,
 		}
